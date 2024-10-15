@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./index.css";
 import "./App.css";
 
 const App = () => {
@@ -79,49 +80,88 @@ const App = () => {
     },
   ]);
 
-  const handleAddFighter = (fighters) => {
-    if (money >= fighters.price) {
-      setTeam((prevItems) => [...prevItems, JSON.stringify(fighters)]);
-      setMoney((preMoney) => preMoney - fighters.price);
-      setTotalStrength((preStrength) => preStrength + fighters.strength);
-      setTotalAgility((preAgility) => preAgility + fighters.agility);
+  const handleAddFighter = (fighter) => {
+    if (money >= fighter.price) {
+      setTeam((prevItems) => [...prevItems, fighter]);
+      setMoney((preMoney) => preMoney - fighter.price);
+      setTotalStrength((preStrength) => preStrength + fighter.strength);
+      setTotalAgility((preAgility) => preAgility + fighter.agility);
     } else {
       console.log("Not enough money");
     }
   };
 
-  const handleRemoveFighter = (currFighters) => {
-    setTeam((prevItems2) => [...prevItems2].toSpliced(currFighters, 1));
-    setTotalStrength((preStrength2) => preStrength2 - currFighters.strength);
-    setTotalAgility((preAgility2) => preAgility2 - currFighters.agility);
-    setMoney((preMoney2) => preMoney2 + currFighters.price);
+  const handleRemoveFighter = (member) => {
+    setTeam((prevItems) =>
+      prevItems.filter((fighter) => fighter.name !== member.name)
+    );
+    setTotalStrength((preStrength) => preStrength - member.strength);
+    setTotalAgility((preAgility) => preAgility - member.agility);
+    setMoney((preMoney) => preMoney + member.price);
   };
 
   return (
     <>
+      <h1>Zombie Fighters</h1>
       <div>Money: {money} </div>
       <div>Team Strength: {totalStrength} </div>
       <div>Agility: {totalAgility} </div>
       <div>
-        Team : {team.length === 0 ? <p>Pick some team members!</p> : team}
+        <h2>Team</h2>
+        <div className="member">
+          {team.length === 0 ? (
+            <p>Pick some team members!</p>
+          ) : (
+            team.map((member, idx) => {
+              return (
+                <div key={idx}>
+                  <ul>
+                    <li>
+                      <img src={member.img}></img>
+                    </li>
+                    <li>name ={member.name}</li>
+                    <li>price ={member.price}</li>
+                    <li>strength ={member.strength}</li>
+                    <li>agility={member.agility}</li>
+                  </ul>
+                  <button
+                    className="buttons"
+                    onClick={() => handleRemoveFighter(member)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              );
+            })
+          )}
+        </div>
       </div>
-      {zombieFighters.map((item, idx) => {
-        return (
-          <div key={idx}>
-            <ul>
-              <li>
-                <img src={item.img}></img>
-              </li>
-              <li>name ={item.name}</li>
-              <li>price ={item.price}</li>
-              <li>strength ={item.strength}</li>
-              <li>agility={item.agility}</li>
-            </ul>
-            <button onClick={() => handleAddFighter(item)}>Add</button>
-            <button onClick={() => handleRemoveFighter(item)}>Remove</button>
-          </div>
-        );
-      })}
+      <div>
+        <h3>Fighters</h3>
+        <section>
+          {zombieFighters.map((item, idx) => {
+            return (
+              <div key={idx}>
+                <ul>
+                  <li>
+                    <img src={item.img}></img>
+                  </li>
+                  <li>name ={item.name}</li>
+                  <li>price ={item.price}</li>
+                  <li>strength ={item.strength}</li>
+                  <li>agility={item.agility}</li>
+                </ul>
+                <button
+                  className="buttons"
+                  onClick={() => handleAddFighter(item)}
+                >
+                  Add
+                </button>
+              </div>
+            );
+          })}
+        </section>
+      </div>
       ;
     </>
   );

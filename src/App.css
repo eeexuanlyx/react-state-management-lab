@@ -1,7 +1,4 @@
-.div {
-  width: 60%;
-  background-color: rgba(153, 114, 78, 0.187);
-  padding: 1rem;
+.section {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -15,4 +12,10 @@ ul {
 li {
   list-style: none;
   margin: 10px;
+}
+
+.members {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
